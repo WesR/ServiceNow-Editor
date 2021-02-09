@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+  <title>Service Now comment editor</title>
+  <link rel="shortcut icon" type="image/jpg" href="http://wesring.com/favicon.ico"/>
+  <meta content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="./assets/main.css">
+  <script src="./node_modules/monaco-editor/min/vs/loader.js"></script>
+  <script src="./assets/main.js"></script>
+</head>
+<body>
+<div id="editor"></div>
+
+<div id="menu">
+    <button id="btnCopyToClip">Copy rendered to clipboard</button>
+    <!--<button>Open txt or MD file</button>-->
+    <!--<button>Open Cheatsheet</button>-->
+    <button onclick="window.location.href = 'https://github.com/wesr'">View website Source Code</button>
+</div>
+
+<textarea id="renderedText">
+
+</textarea>
+
+</body>
+</html>
