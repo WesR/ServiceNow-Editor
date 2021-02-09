@@ -49,11 +49,11 @@ function convertToServiceNowFormat() {
     raw = editor.getValue();
 
     //Bold
-    raw = raw.replace(/\*\*(.*)\*\*/gis, '[code]<b>$1</b>[/code]');
+    raw = raw.replace(/\*\*(.*)\*\*/gi, '[code]<b>$1</b>[/code]');
     //raw = raw.replace(/__(.*)__/gis, '[code]<b>$1</b>[/code]');
 
     //Ital
-    raw = raw.replace(/\*(.*)\*/gis, '[code]<em>$1</em>[/code]');
+    raw = raw.replace(/\*(.*)\*/gi, '[code]<em>$1</em>[/code]');
     //raw = raw.replace(/_(.*)_/gis, '[code]<em>$1</em>[/code]');
 
     //strikethorugh
