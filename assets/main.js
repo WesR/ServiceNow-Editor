@@ -10,7 +10,7 @@ window.onload = function () {
 }
 var editor;
 
-require.config({ paths: { 'vs': './node_modules/monaco-editor/min/vs' }});
+require.config({ paths: { 'vs': './assets/monaco' }});
 require(['vs/editor/editor.main'], function() {
     editor = monaco.editor.create(document.getElementById('editor'), {
         value: [
