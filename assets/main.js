@@ -18,7 +18,7 @@ require(['vs/editor/editor.main'], function() {
             'Hosted at [wesring.com](https://wesring.com)',
             '',
             '## About',
-            'This is a **bad** markdown editor that then coverts to the *wacky* formatting of service now. \\',
+            'This is a **bad** markdown editor that coverts to the *wacky* formatting of service now. \\',
             'Backwacks preform a line break.',
             'Here is an example of a code snipit `{"value":"KKpR1al9JZTFOHXeGrb9yUuhppiunC0O"}` . ',
             '',
