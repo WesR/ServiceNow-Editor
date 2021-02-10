@@ -56,18 +56,15 @@ function convertToServiceNowFormat() {
     var raw = editor.getValue();
 
     //Bold
-    raw = raw.replace(/\*\*(.*)\*\*/gi, '[code]<b>$1</b>[/code]');
-    raw = raw.replace(/__(.*)__/gi, '[code]<b>$1</b>[/code]');
+    raw = raw.replace(/\*\*(.+)\*\*/gi, '[code]<b>$1</b>[/code]');
+    raw = raw.replace(/__(.+)__/gi, '[code]<b>$1</b>[/code]');
 
     //Ital
-    raw = raw.replace(/\*(.*)\*/gi, '[code]<em>$1</em>[/code]');
-    raw = raw.replace(/_(.*)_/gi, '[code]<em>$1</em>[/code]');
+    raw = raw.replace(/\*(.+)\*/gi, '[code]<em>$1</em>[/code]');
+    raw = raw.replace(/_(.+)_/gi, '[code]<em>$1</em>[/code]');
 
     //strikethorugh
-    raw = raw.replace(/~~(.*?)~~/gis, '[code]<strike>$1</strike>[/code]');
-
-    //underline
-    raw = raw.replace(/_(.*?)_/gis, '[code]<strike>$1</strike>[/code]');
+    raw = raw.replace(/~~(.+?)~~/gis, '[code]<strike>$1</strike>[/code]');
 
     //codeblock
     raw = raw.replace(/```\n(.*?)\n```/gis, '[code]<pre><code>\n$1\n</code></pre>[/code]');
