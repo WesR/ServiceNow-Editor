@@ -30,7 +30,7 @@ require(['vs/editor/editor.main'], function() {
             '## Changelog',
             '+ Fixed: Codeblocks, Links, newline',
             '+ Added: unordered lists',
-            '+ Added: bold and italic with underscores',
+            '+ Added: __bold__ and _italic_ with underscores',
             '',
             '```',
             'fn main()-> String {',
@@ -41,8 +41,7 @@ require(['vs/editor/editor.main'], function() {
             '### Things that don\'t work',
             '1. numbered lists don\'t do anything',
             '2. unordered lists only work with "+"',
-            '',
-            '*nested __italic or bold__ might not work because of the extra [code] blocks*'
+            '3. *nested __italic or bold__ might not work...yet*'
         ].join('\n'),
         language: 'markdown',
         theme: 'vs-dark',
@@ -123,15 +122,19 @@ function convertToServiceNowFormat() {
             if (list.length > 1){
                 for (i=0; i < list.length; i++){
                     if (i == 0){
-                        raw = raw.replace(list[i], '[code]<ul><li>'+list[i].substring(1, list[i].length-1)+'</li>\n');
+                        cleanli = list[i].substring(1, list[i].length-1).replace(/\[code\]/g,'').replace(/\[\/code\]/g,'');
+                        raw = raw.replace(list[i], '[code]<ul><li>'+cleanli+'</li>\n');
                     } else if(i+1 == list.length){
-                        raw = raw.replace(list[i], '<li>'+list[i].substring(1, list[i].length-1)+'</li></ul>[/code]\n');
+                        cleanli = list[i].substring(1, list[i].length-1).replace(/\[code\]/g,'').replace(/\[\/code\]/g,'');
+                        raw = raw.replace(list[i], '<li>'+cleanli+'</li></ul>[/code]\n');
                     } else {
-                        raw = raw.replace(list[i], '<li>'+list[i].substring(1, list[i].length-1)+'</li>\n');
+                        cleanli = list[i].substring(1, list[i].length-1).replace(/\[code\]/g,'').replace(/\[\/code\]/g,'');
+                        raw = raw.replace(list[i], '<li>'+cleanli+'</li>\n');
                     }
                 }       
             } else {
-                raw = raw.replace(list[0], '[code]<ul><li>'+list[0].substring(1, list[0].length-2)+'</li></ul>[/code]\n');
+                cleanli = list[0].substring(1, list[0].length-1).replace(/\[code\]/g,'').replace(/\[\/code\]/g,'');
+                raw = raw.replace(list[0], '[code]<ul><li>'+cleanli+'</li></ul>[/code]\n');
             }
         });
     }
