@@ -19,12 +19,17 @@ require(['vs/editor/editor.main'], function() {
             '',
             '## About',
             'This is a **bad** markdown editor that coverts to the *wacky* formatting of service now. \\',
-            'Backwacks preform a line break.',
-            'Here is an example of a code snipit `{"value":"KKpR1al9JZTFOHXeGrb9yUuhppiunC0O"}` . ',
+            'Backwacks preform a line break. Bold with double **stars** or __underscores__, *single* for _italic_',
+            'Here is an _example_ of a code snipit `{"value":"KKpR1al9JZTFOHXeGrb9yUuhppiunC0O"}` . ',
+            '',
+            '## Useage',
+            '1. Write your markdown',
+            '2. Press "Copy rendered to clipboard"',
+            '3. Paste in Service Now',
             '',
             '```',
-            'fn main(){',
-            '\tlet message = "this is a codeblock";',
+            'fn main()-> String {',
+            '\treturn "this is a codeblock";',
             '}',
             '```',
             '',
@@ -34,7 +39,7 @@ require(['vs/editor/editor.main'], function() {
             '+ unordered lists are also broke',
             '+ very sad',
             '',
-            '*nested* __italic and bold__'
+            '*nested __italic or bold__ might not work because of the extra [code] blocks*',
         ].join('\n'),
         language: 'markdown',
         theme: 'vs-dark',
@@ -50,11 +55,11 @@ function convertToServiceNowFormat() {
 
     //Bold
     raw = raw.replace(/\*\*(.*)\*\*/gi, '[code]<b>$1</b>[/code]');
-    //raw = raw.replace(/__(.*)__/gis, '[code]<b>$1</b>[/code]');
+    raw = raw.replace(/__(.*)__/gi, '[code]<b>$1</b>[/code]');
 
     //Ital
     raw = raw.replace(/\*(.*)\*/gi, '[code]<em>$1</em>[/code]');
-    //raw = raw.replace(/_(.*)_/gis, '[code]<em>$1</em>[/code]');
+    raw = raw.replace(/_(.*)_/gi, '[code]<em>$1</em>[/code]');
 
     //strikethorugh
     raw = raw.replace(/~~(.*?)~~/gis, '[code]<strike>$1</strike>[/code]');
@@ -62,11 +67,10 @@ function convertToServiceNowFormat() {
     //underline
     raw = raw.replace(/_(.*?)_/gis, '[code]<strike>$1</strike>[/code]');
 
+    //codeblock
+    raw = raw.replace(/```\n(.*?)\n```/gis, '[code]<pre><code>\n$1\n</code></pre>[/code]');
     //single line of code
     raw = raw.replace(/`(.*?)`/gi, '[code]<code>$1</code>[/code]');
-
-    //codeblock
-    raw = raw.replace(/```\n(.*?)\n```/gi, '[code]<pre><code>$1</code></pre>[/code]');
 
     //Blockquote
     raw = raw.replace(/^> (.*?)\n/gism, '[code]<blockquote>$1</blockquote>[/code]');
@@ -81,10 +85,10 @@ function convertToServiceNowFormat() {
     raw = raw.replace(/^# (.*?)\n/gism, '[code]<h1>$1</h1>[/code]\n');
 
     //newline
-    raw = raw.replace(/(\\\n)/gi, '<br>\n');
+    raw = raw.replace(/(\\\n)/gi, '\n');
 
     //links
-    raw = raw.replace(/\[(.*?)\]\((.*?)\)/gi, '<a href="$2">$1</a>');
+    raw = raw.replace(/\[(.*?)\]\((.*?)\)/gi, '[code]<a href="$2">$1</a>[/code]');
 
 
     //ul
