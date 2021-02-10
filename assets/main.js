@@ -23,9 +23,14 @@ require(['vs/editor/editor.main'], function() {
             'Here is an _example_ of a code snipit `{"value":"KKpR1al9JZTFOHXeGrb9yUuhppiunC0O"}` . ',
             '',
             '## Useage',
-            '1. Write your markdown',
-            '2. Press "Copy rendered to clipboard"',
-            '3. Paste in Service Now',
+            '+ Write your markdown',
+            '+ Press "Copy rendered to clipboard"',
+            '+ Paste in Service Now',
+            '',
+            '## Changelog',
+            '+ Fixed: Codeblocks, Links, newline',
+            '+ Added: unordered lists',
+            '+ Added: bold and italic with underscores',
             '',
             '```',
             'fn main()-> String {',
@@ -34,12 +39,10 @@ require(['vs/editor/editor.main'], function() {
             '```',
             '',
             '### Things that don\'t work',
-            '1. This is a numbered list',
-            '2. they broke',
-            '+ unordered lists are also broke',
-            '+ very sad',
+            '1. numbered lists don\'t do anything',
+            '2. unordered lists only work with "+"',
             '',
-            '*nested __italic or bold__ might not work because of the extra [code] blocks*',
+            '*nested __italic or bold__ might not work because of the extra [code] blocks*'
         ].join('\n'),
         language: 'markdown',
         theme: 'vs-dark',
@@ -51,7 +54,7 @@ require(['vs/editor/editor.main'], function() {
 
 //https://community.servicenow.com/community?id=community_blog&sys_id=4d9ceae1dbd0dbc01dcaf3231f9619e1
 function convertToServiceNowFormat() {
-    raw = editor.getValue();
+    var raw = editor.getValue();
 
     //Bold
     raw = raw.replace(/\*\*(.*)\*\*/gi, '[code]<b>$1</b>[/code]');
@@ -91,24 +94,47 @@ function convertToServiceNowFormat() {
     raw = raw.replace(/\[(.*?)\]\((.*?)\)/gi, '[code]<a href="$2">$1</a>[/code]');
 
 
-    //ul
-    //kina broke because you can only have 1 list
-    /*
-    list = raw.match(/^\+ (.*?)(?:\n|$)/);
+    //ul    
+    //get lists
+    rawList = raw.match(/^\+ (.*?)(?:\n|$)/gmi);
+    if (rawList != null) {
+        //Chop lists
+        lists = [];
+        if (rawList.length == 1){
+            lists[0].push([rawList[0]]);
+        } else {
+            listIndex = 0;
+            lastLocation = raw.indexOf(rawList[0]) + rawList[0].length;
+            lists.push([rawList[0]]);
+            for(i=1;i < rawList.length; i++){
+                if (lastLocation == raw.indexOf(rawList[i])){
+                    lists[listIndex].push(rawList[i]);
+                    lastLocation = raw.indexOf(rawList[i]) + rawList[i].length
+                } else {
+                    listIndex++;
+                    lastLocation = raw.indexOf(rawList[i]) + rawList[i].length
+                    lists.push([rawList[i]]);
+                }
+            }
+        }
 
-    if (list != null) {
-        list.array.forEach(e => {
-            if (list.length == 1){
-                raw = raw.replace("+ " + e, '<ul><li>'+e+'</li></ul>')
-            } else if (list[0] === e){
-                raw = raw.replace("+ " + e, '<ul><li>'+e+'</li>')
-            } else if(list[list.length-1] === e){
-                raw = raw.replace("+ " + e, '<li>'+e+'</li></ul>')
+        //build final lists
+        lists.forEach(list => {
+            if (list.length > 1){
+                for (i=0; i < list.length; i++){
+                    if (i == 0){
+                        raw = raw.replace(list[i], '[code]<ul><li>'+list[i].substring(1, list[i].length-1)+'</li>\n');
+                    } else if(i+1 == list.length){
+                        raw = raw.replace(list[i], '<li>'+list[i].substring(1, list[i].length-1)+'</li></ul>[/code]\n');
+                    } else {
+                        raw = raw.replace(list[i], '<li>'+list[i].substring(1, list[i].length-1)+'</li>\n');
+                    }
+                }       
             } else {
-                raw = raw.replace("+ " + e, '<li>'+e+'</li>')
+                raw = raw.replace(list[0], '[code]<ul><li>'+list[0].substring(1, list[0].length-2)+'</li></ul>[/code]\n');
             }
         });
     }
-    */
+    
     return raw
 }
