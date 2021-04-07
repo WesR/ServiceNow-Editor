@@ -22,7 +22,7 @@ require(['vs/editor/editor.main'], function() {
             'Backwacks preform a line break. Bold with double **stars** or __underscores__, *single* for _italic_',
             'Here is an _example_ of a code snipit `{"value":"KKpR1al9JZTFOHXeGrb9yUuhppiunC0O"}` . ',
             '',
-            '## Useage',
+            '## Usage',
             '+ Write your markdown',
             '+ Press "Copy rendered to clipboard"',
             '+ Paste in Service Now',
