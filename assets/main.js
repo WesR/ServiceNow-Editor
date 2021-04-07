@@ -67,7 +67,13 @@ function convertToServiceNowFormat() {
     raw = raw.replace(/~~(.+?)~~/gis, '[code]<strike>$1</strike>[/code]');
 
     //codeblock
-    raw = raw.replace(/```\n(.*?)\n```/gis, '[code]<pre><code>\n$1\n</code></pre>[/code]');
+    raw.match(/```\n(.*?)\n```/gis).forEach(e => {
+        newcodeblock = e.replace(/```\n(.*?)\n```/gis, '[code]<pre><code>\n$1\n</code></pre>[/code]')
+        console.log(newcodeblock)
+        newcodeblock = newcodeblock.replace(/\n/g, " <br>\n")
+        raw = raw.replace(e, newcodeblock)
+    });
+
     //single line of code
     raw = raw.replace(/`(.*?)`/gi, '[code]<code>$1</code>[/code]');
 
