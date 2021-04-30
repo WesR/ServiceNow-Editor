@@ -70,7 +70,7 @@ function convertToServiceNowFormat() {
     raw.match(/```\n(.*?)\n```/gis).forEach(e => {
         newcodeblock = e.replace(/```\n(.*?)\n```/gis, '[code]<pre><code>\n$1\n</code></pre>[/code]')
         console.log(newcodeblock)
-        newcodeblock = newcodeblock.replace(/\n/g, " <br>\n")
+        newcodeblock = newcodeblock.replace(/\n/g, " <br>")
         raw = raw.replace(e, newcodeblock)
     });
 
